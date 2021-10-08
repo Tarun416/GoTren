@@ -2,17 +2,18 @@ package com.example.gotren.data
 
 import android.util.Log
 import com.example.gotren.TrendingApplication
+import com.example.gotren.data.local.dao.TrendingDao
 import com.example.gotren.data.local.entitiy.TrendingData
 import com.example.trendinglib.TrendingClient
+import com.example.trendinglib.api.ApiService
 import com.example.trendinglib.model.TrendingListResponseItem
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class TrendingRepository {
+class TrendingRepository(  private val dao: TrendingDao,
+                           private val api: ApiService) {
 
-    val api = TrendingClient.api
-    val dao = TrendingApplication().getDatabase().getTrendingDao()
 
     fun getTrendingListFromDb(): Single<TrendingData> {
         return dao.getTrendingList()

@@ -3,11 +3,13 @@ package com.example.gotren.ui
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.gotren.TrendingApplication
 import com.example.gotren.data.TrendingRepository
 import com.example.gotren.data.local.TrendingPreference
 import com.example.gotren.data.local.entitiy.TrendingData
 import com.example.gotren.utils.Resource
 import com.example.trending.domain.ResourceState
+import com.example.trendinglib.TrendingClient
 import com.example.trendinglib.model.TrendingListResponseItem
 import io.reactivex.observers.DisposableSingleObserver
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +17,10 @@ import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
-     private val repo = TrendingRepository()
+    val api = TrendingClient.api
+    val dao = TrendingApplication().getDatabase().getTrendingDao()
+
+     private val repo = TrendingRepository(dao,api)
      private val _trending = MutableLiveData<Resource<List<TrendingListResponseItem>>>()
 
      val trending :  MutableLiveData<Resource<List<TrendingListResponseItem>>> = _trending
