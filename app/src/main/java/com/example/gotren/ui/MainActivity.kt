@@ -2,11 +2,43 @@ package com.example.gotren.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.gotren.R
+import androidx.activity.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.gotren.databinding.ActivityMainBinding
+import com.example.trendinglib.model.TrendingListResponseItem
 
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel : MainViewModel by viewModels()
+
+    private lateinit var binding : ActivityMainBinding
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setRecyclerView()
+        viewModel.getTrendingList()
+        observeLiveData()
+
+
+    }
+
+    private fun observeLiveData() {
+        viewModel.trending.observe(this)
+        {
+            list.clear()
+            list.addAll(it)
+
+        }
+
+    }
+
+    private var list = ArrayList<TrendingListResponseItem>()
+    private fun setRecyclerView() {
+
     }
 }
