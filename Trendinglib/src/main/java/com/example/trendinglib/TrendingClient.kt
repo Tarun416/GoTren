@@ -7,9 +7,11 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 object TrendingClient {
 
+    private const val BASE_URL = "https://run.mocky.io"
+
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl("https://run.mocky.io")
+            .baseUrl(BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
     }
