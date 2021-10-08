@@ -83,6 +83,11 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         this.list.addAll(data!!)
         adapter.notifyDataSetChanged()
 
+        val duration =
+            (System.currentTimeMillis() - preference.lastdatafetched!!.toLong()) / (1000 * 60)
+        checkForLastUpdateTime(duration)
+        binding.lastUpdatedAt.visibility=View.VISIBLE
+
     }
 
     private var list = ArrayList<TrendingListResponseItem>()
@@ -104,10 +109,11 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
             Log.d("lastfetchdurationinmin", duration.toString())
             viewModel.getTrendingList(true)
 
-            checkForLastUpdateTime(duration)
+           // checkForLastUpdateTime(duration)
         }
         // fetch from remote
         else {
+            binding.lastUpdatedAt.visibility=View.GONE
             if (CheckNetConnectivity.isOnline(this)) {
                 list.clear()
                 adapter.notifyDataSetChanged()
@@ -133,6 +139,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         cal.add(Calendar.MINUTE,(duration*-1).toInt())
 
         Log.d("updatedtime",sdf.format(cal.time))
+        binding.lastUpdatedAt.text = "Last updated at ${sdf.format(cal.time)}"
     }
 
     private fun checkForLocalFetch2hrCondition(): Boolean {
