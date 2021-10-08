@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
     private val viewModel : MainViewModel by viewModels()
 
     private lateinit var binding : ActivityMainBinding
-
+    private lateinit var adapter : MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,13 +32,15 @@ class MainActivity : AppCompatActivity() {
         {
             list.clear()
             list.addAll(it)
-
+            adapter.notifyDataSetChanged()
         }
 
     }
 
     private var list = ArrayList<TrendingListResponseItem>()
     private fun setRecyclerView() {
-
+        binding.trendingrv.layoutManager = LinearLayoutManager(this)
+        adapter = MainAdapter(this,list)
+        binding.trendingrv.adapter = adapter
     }
 }
