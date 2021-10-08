@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
     data class TrendingListResponseItem(
         @Json(name = "author")
-        val author: String? = null,
+        var author: String? = null,
         @Json(name = "avatar")
         val avatar: String? = null,
         @Json(name = "currentPeriodStars")
@@ -21,9 +21,9 @@ import com.squareup.moshi.JsonClass
         @Json(name = "languageColor")
         val languageColor: String? = null,
         @Json(name = "name")
-        val name: String? = null,
+        var name: String? = null,
         @Json(name = "stars")
-        val stars: Int? = null,
+        var stars: Int? = null,
         @Json(name = "url")
         val url: String? = null
     )

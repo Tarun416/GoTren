@@ -1,12 +1,16 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
 
+    buildFeatures{
+        viewBinding true
+    }
     defaultConfig {
         applicationId "com.example.gotren"
         minSdkVersion 23
@@ -33,6 +37,9 @@ android {
 }
 
 dependencies {
+
+    def room_version = "2.2.5"
+
     implementation project(path: ':Trendinglib')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -51,5 +58,15 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation("io.coil-kt:coil:1.4.0")
+
+    // Room components
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+
+
+
+
 
 }
