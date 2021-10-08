@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GoTren</string>
+    <string name="no_internet">Please check your internet</string>
 </resources>
