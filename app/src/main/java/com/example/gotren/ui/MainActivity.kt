@@ -13,6 +13,10 @@ import com.example.gotren.databinding.ActivityMainBinding
 import com.example.gotren.utils.CheckNetConnectivity
 import com.example.trending.domain.ResourceState
 import com.example.trendinglib.model.TrendingListResponseItem
+import java.text.SimpleDateFormat
+import java.time.Duration
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() , View.OnClickListener{
 
@@ -20,6 +24,8 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
 
     private lateinit var binding : ActivityMainBinding
     private lateinit var adapter : MainAdapter
+
+    private val sdf=  SimpleDateFormat("dd MMM, h:mm a")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,13 +96,18 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
     val twohourInSeconds = 120 * 60
     private fun getList(swipeRefresh: Boolean) {
 
-
-        if (!swipeRefresh && preference.lastdatafetched != null && ((System.currentTimeMillis() - (preference.lastdatafetched?.toLong()!!))/1000 <= twohourInSeconds)) {
+        // fetch from local
+        if(!swipeRefresh && checkForLocalFetch2hrCondition())
+        {
             val duration =
                 (System.currentTimeMillis() - preference.lastdatafetched!!.toLong()) / (1000 * 60)
             Log.d("lastfetchdurationinmin", duration.toString())
             viewModel.getTrendingList(true)
-        } else {
+
+            checkForLastUpdateTime(duration)
+        }
+        // fetch from remote
+        else {
             if (CheckNetConnectivity.isOnline(this)) {
                 list.clear()
                 adapter.notifyDataSetChanged()
@@ -114,6 +125,18 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
                 Toast.makeText(this, getString(R.string.no_internet), Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun checkForLastUpdateTime(duration: Long) {
+        val cal = Calendar.getInstance()
+        cal.time = Date()
+        cal.add(Calendar.MINUTE,(duration*-1).toInt())
+
+        Log.d("updatedtime",sdf.format(cal.time))
+    }
+
+    private fun checkForLocalFetch2hrCondition(): Boolean {
+        return preference.lastdatafetched != null && ((System.currentTimeMillis() - (preference.lastdatafetched?.toLong()!!))/1000 <= twohourInSeconds)
     }
 
     override fun onClick(v: View?) {
