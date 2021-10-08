@@ -1,0 +1,2 @@
+rootProject.name = "GoTren"
+include ':app'
